@@ -8,7 +8,7 @@ module.exports = {
     entry: './src/js/script.js',
     output: {
         filename: 'bundle.js',
-        path: path.join(__dirname, 'dist', 'js', 'bundle.js')
+        path: path.join(__dirname, 'dist', 'js')
     },
     watch: true,
     devtool: "source-map",
