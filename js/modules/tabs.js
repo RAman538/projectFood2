@@ -1,8 +1,7 @@
-function tabs() {
-    const tabsParent = document.querySelector('.tabcontainer'),
-            tab = document.querySelectorAll('.tabcontent'),
-            tabItemsParent = document.querySelector('.tabheader__items'),
-            tabItem = tabItemsParent.querySelectorAll('.tabheader__item');
+function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass) {
+    const tab = document.querySelectorAll(tabsContentSelector),
+        tabItemsParent = document.querySelector(tabsParentSelector),
+        tabItem = document.querySelectorAll(tabsSelector);
 
         const hiddenTabs = () => {
             tab.forEach(i => {
@@ -11,36 +10,34 @@ function tabs() {
             });
 
             tabItem.forEach(i => {
-                i.classList.remove('tabheader__item_active');
+                i.classList.remove(activeClass);
             });
         };
 
         const showTabs = (i = 0) => {
             tab[i].classList.add('show', 'fade');
             tab[i].classList.remove('hide');
-            tabItem[i].classList.add('tabheader__item_active');
+            tabItem[i].classList.add(activeClass);
         };
 
         const chooseStyleFood = () => {
-            tabsParent.addEventListener('click', (e) => {
+            tabItemsParent.addEventListener('click', (e) => {
                 const target = e.target;
 
-                if (target && target.classList.contains('tabheader__item')) {
+                if (target && target.classList.contains(tabsSelector.slice(1))) {
                     tabItem.forEach((item, i ) => {
                         if (item == target) {
                             hiddenTabs();
                             showTabs(i);
-        
                         }
-                        
                     });
                 }
             });
         };
-        
+
         hiddenTabs();
         showTabs();
         chooseStyleFood();
 }
 
-module.exports = tabs;
+export default tabs;

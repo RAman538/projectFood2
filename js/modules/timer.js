@@ -1,5 +1,4 @@
-function timer() {
-    const start = '2020-06-24';
+function timer(id, start) {
 
         function getTimeRemaining(begin) {
 
@@ -59,7 +58,7 @@ function timer() {
             }
 
         }
-        setClock('.timer', start);
+        setClock(id, start);
 }
 
-module.exports = timer;
+export default timer;

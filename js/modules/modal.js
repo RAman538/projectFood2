@@ -1,33 +1,53 @@
-function modal() {
-    const buttons = document.querySelectorAll('[data-modalBut]'),
-              modal = document.querySelector('.modal');
+function openModal(modalSelector, setTimeShowModal) {
+    const modal = document.querySelector(modalSelector);
 
-        function openModal() {
-                modal.classList.add('show');
-                modal.classList.remove('hide');
-                document.body.style.overflow = 'hidden';
-                clearInterval(setTimeShowModal);
-        }
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
 
-        buttons.forEach(i => {
+    if (setTimeShowModal) {
+        clearInterval(setTimeShowModal);
+    }
+
+   // window.removeEventListener('scroll', showModalByScroll);
+    
+}
+
+function closeModal(modalSelector) {
+    const modal = document.querySelector(modalSelector);
+
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+// функция показа модального окна при скроле в низ страницы
+
+/* function showModalByScroll(modalSelector, setTimeShowModal) {
+
+    if (document.documentElement.scrollHeight <= window.pageYOffset + document.documentElement.clientHeight + 1) {
+        openModal(modalSelector, setTimeShowModal);
+        window.removeEventListener('scroll', showModalByScroll);
+    }
+}
+ */
+
+function modal(triggerSelector, modalSelector, setTimeShowModal) {
+    const modalTrigger = document.querySelectorAll(triggerSelector),
+            modal = document.querySelector(modalSelector);
+
+        modalTrigger.forEach(i => {
             i.addEventListener('click', () => {
                 
-                openModal();
-                
+                openModal(modalSelector, setTimeShowModal); // чтобы передать в колбек функцию с аргументом,
+                        // т.к она не должна быть вызвана сразу, оборачиваем ее в функцию стрелку
             });
         });
 
-        function closeModal() {
-
-            modal.classList.add('hide');
-            modal.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
         modal.addEventListener('click', (e) => {
 
-            if (e.target === modal || e.target.getAttribute('data-close') == '') {
-                closeModal();
+            if (e.target === modal || e.target.getAttribute('data-modalClose') == '') {
+                closeModal(modalSelector);
             }
         });
 
@@ -36,20 +56,16 @@ function modal() {
         document.addEventListener('keydown', (e) => {
 
             if (e.code === 'Escape' && modal.classList.contains('show')) {
-                closeModal();
+                closeModal(modalSelector);
             }
         });
-
-        // функция показа модального окна через некоторое время
-
-        const setTimeShowModal = setTimeout(openModal, 80000);
 
         // функция показа модального окна при скроле в низ страницы
 
         function showModalByScroll() {
 
-            if (document.documentElement.scrollHeight <= window.pageYOffset + document.documentElement.clientHeight) {
-                openModal();
+            if (document.documentElement.scrollHeight <= window.pageYOffset + document.documentElement.clientHeight + 1) {
+                openModal(modalSelector, setTimeShowModal);
                 window.removeEventListener('scroll', showModalByScroll);
             }
         }
@@ -57,4 +73,7 @@ function modal() {
         window.addEventListener('scroll', showModalByScroll);
 }
 
-module.exports = modal;
+export default modal;
+export {openModal};
+export {closeModal};
+// export {showModalByScroll};
